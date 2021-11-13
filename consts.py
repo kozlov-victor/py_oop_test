@@ -1,0 +1,7 @@
+LEFT = 1
+RIGHT = 2
+UP = 3
+DOWN = 4
+
+WIDTH = 30
+HEIGHT = 10
