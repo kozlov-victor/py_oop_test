@@ -1,8 +1,17 @@
 from consts import LEFT, RIGHT, UP, DOWN, WIDTH, HEIGHT
 import random
 
+
 def dist(x1: int, y1: int, x2: int, y2: int):
     return (((x2 - x1) ** 2) + ((y2 - y1) ** 2)) ** 0.5
+
+
+def clamp(val: int, min: int, max: int) -> int:
+    if val < min:
+        return min
+    if val > max:
+        return max
+    return val
 
 
 class AbstractFish:
@@ -12,8 +21,8 @@ class AbstractFish:
         self.y = y
 
     def _move_by(self, x: int, y: int):
-        self.x = (self.x + x) % WIDTH
-        self.y = (self.y + y) % HEIGHT
+        self.x = clamp(self.x + x,0,WIDTH-1)
+        self.y = clamp(self.y + y,0,HEIGHT-1)
 
     def move_to_direction_by(self, direction: int, by: int):
         if direction == LEFT:
@@ -40,10 +49,9 @@ class PredatorFish(AbstractFish):
                 closest_prey = p
         points_to_move_by_x = closest_prey.x - self.x
         points_to_move_by_y = closest_prey.y - self.y
-        dir1 = RIGHT if points_to_move_by_x>0 else LEFT
-        dir2 = UP if points_to_move_by_y>0 else DOWN
-        return dir1 if random.randint(0,10)>5 else dir2
-
+        dir1 = RIGHT if points_to_move_by_x > 0 else LEFT
+        dir2 = DOWN if points_to_move_by_y > 0 else UP
+        return dir1 if random.randint(0, 10) > 5 else dir2
 
 
 class PrayFish(AbstractFish):
