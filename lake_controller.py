@@ -1,5 +1,8 @@
+from typing import List
+
 from models.fishes import AbstractFish, PrayFish, PredatorFish
 import random
+
 
 def get_random_direction():
     return random.randint(1, 4)
@@ -7,13 +10,13 @@ def get_random_direction():
 
 class LakeController:
     def __init__(self, width: int, height: int):
-        self.width = width
-        self.height = height
-        self.predators = []
-        self.preys = []
+        self.width: int = width
+        self.height: int = height
+        self.predators: List[PredatorFish] = []
+        self.preys: List[PrayFish] = []
 
     def add_fish(self, f: AbstractFish):
-        if isinstance(f,PrayFish):
+        if isinstance(f, PrayFish):
             self.preys.append(f)
         else:
             self.predators.append(f)
@@ -30,13 +33,12 @@ class LakeController:
     def next_tick(self):
         for p in self.preys:
             direction = get_random_direction()
-            p.move_to_direction_by(direction,1)
+            p.move_to_direction_by(direction, 1)
             p.ticks += 1
         for p in self.predators:
             direction = p.get_direction_to_closest_prey(self.preys)
-            p.move_to_direction_by(direction,1)
+            p.move_to_direction_by(direction, 1)
             p.ticks += 1
-
 
     def debug(self):
         result = ''
